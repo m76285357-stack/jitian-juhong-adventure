@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#234f43"><meta name="description" content="和积田小学的橘红少年一起跑酷、收集花叶、拼出剪纸图案。适合手机触屏和电脑，NFC碰一碰即可打开。">
+  <title>橘红少年大冒险 · 积田小学</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg"><link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css"><script type="module" src="app.js"></script>
+</head>
+<body>
+<div class="site-wrap">
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="橘红少年首页"><img src="assets/icon.svg" alt="" width="42" height="42"><span>橘红少年<small>积田小学 · 家乡冒险俱乐部</small></span></a>
+    <nav aria-label="游戏导航"><button class="nav-link active" data-tab="adventure">花叶跑酷</button><button class="nav-link" data-tab="paper">剪纸工坊</button><button class="nav-link" data-tab="collection">我的收藏</button></nav>
+    <button id="sound" class="round-btn" aria-label="开启音效" aria-pressed="false" title="开启音效">♪<span class="sound-off">×</span></button>
+  </header>
+  <div id="nfcWelcome" class="nfc-welcome" hidden>✦ 碰一碰成功！你的橘红冒险卡已就位，准备出发吧。</div>
+  <main>
+    <section id="adventure" class="tab-panel active" aria-label="花叶跑酷">
+      <div class="hero-copy"><div class="eyebrow"><span class="live-dot"></span> NFC 碰一碰 · 即刻出发</div><h1>把家乡，<br>玩成<span class="title-accent">大冒险。</span></h1><p class="hero-description">和橘红少年穿过花园、剪纸小巷和校园跑道。<br class="desktop-break">追着花叶跑，把快乐带回家。</p><div class="hero-badges"><span>三段冒险</span><span>随手就能玩</span><span>亲手拼剪纸</span></div><div class="hero-note"><span class="tiny-flower">✿</span><p>帽子上的绿，来自化州橘红；<br>小小白花，是出发的信号。</p></div><div class="best-line"><span>你的最好成绩</span><strong id="bestScore">0</strong><span>分</span><button id="openHelp" class="text-btn">怎么玩 ↗</button></div></div>
+      <div class="game-column">
+        <div class="game-topline"><span><i></i> 花叶跑酷 / FLOWER RUN</span><button id="fullscreen" class="text-btn" aria-label="全屏游戏">全屏 ↗</button></div>
+        <div id="gameShell" class="game-shell">
+          <canvas id="game" aria-label="三条跑道的花叶收集游戏。使用左右方向键移动，空格跳跃。">你的浏览器不支持画布，请使用较新的浏览器。</canvas>
+          <div id="hud" class="hud" hidden><div class="hud-left"><span id="stageLabel">橘红花园</span><strong id="score">0<small>分</small></strong></div><div class="hud-right"><span id="hearts">♥♥♥♥</span><div><span id="timeLeft">60</span><small>秒</small><button id="pause" class="pause-btn" aria-label="暂停游戏">Ⅱ</button></div></div><div class="progress-track"><div id="progressFill"></div></div></div>
+          <div id="powerLabel" class="power-label" hidden></div><div id="gameToast" class="game-toast" aria-live="polite"></div>
+          <div id="intro" class="game-overlay intro"><div class="intro-inner"><img class="intro-mascot" src="assets/mascot.png" alt="戴着橘红叶帽，邀请你一起冒险的橘红少年"><span class="overline">橘红少年，等你一起出发</span><h2>花叶冲冲冲！</h2><p>左右换道 · 点一下跳跃<br>捡白花，攒出你的保护罩</p><div class="difficulty" aria-label="选择难度"><button class="chosen" data-mode="easy" aria-pressed="true">轻松玩<small>60 秒 · 4 颗爱心</small></button><button data-mode="brave" aria-pressed="false">勇敢挑战<small>75 秒 · 3 颗爱心</small></button></div><button id="start" class="primary-btn start-btn">开始冒险 <span>→</span></button><div class="intro-tip">电脑：← → 换道，空格跳跃<br>手机：滑动换道，向上滑或点击跳跃</div></div></div>
+          <div id="countdown" class="countdown" hidden aria-live="polite">3</div>
+          <div id="pauseOverlay" class="game-overlay pause-overlay" hidden><div class="pause-inner"><span class="overline">休息一下</span><h2>冒险暂停啦</h2><p>花叶会等你回来。</p><button id="resume" class="primary-btn">继续冒险 →</button><button id="restart" class="secondary-btn">重新出发</button></div></div>
+          <div id="result" class="game-overlay result-overlay" hidden><div class="result-inner"><span class="result-stars" id="resultStars">✦ ✦ ✦</span><h2 id="resultTitle">冒险完成！</h2><p id="resultMessage"></p><div class="result-score"><strong id="resultScore">0</strong><span>本次得分</span></div><div class="result-stats"><span>花叶 <b id="resultItems">0</b></span><span>最高连击 <b id="resultCombo">0</b></span></div><div id="rewardNotice" class="reward-notice"></div><button id="playAgain" class="primary-btn">再出发一次 →</button><button id="craftAfter" class="secondary-btn">去剪纸工坊 ✿</button></div></div>
+          <div id="touchControls" class="touch-controls" hidden><button data-action="left" aria-label="向左移动">←</button><button data-action="jump" class="jump-btn" aria-label="跳跃">跳跃 ↑</button><button data-action="right" aria-label="向右移动">→</button></div>
+        </div>
+        <div class="game-bottomline"><span><kbd>←</kbd><kbd>→</kbd> 换道 <kbd>空格</kbd> 跳跃</span><span>3 朵白花 = 保护罩 ✿</span></div>
+      </div>
+    </section>
+    <section id="paper" class="tab-panel workshop" hidden aria-label="剪纸工坊"><div class="section-heading"><div><div class="eyebrow">PAPER-CUT STUDIO</div><h2>把小碎片，拼成<span>大作品。</span></h2><p>点击拼片旋转，和浅色轮廓对齐。每一张都是你的家乡小作品。</p></div><span class="section-flower">✿</span></div><div class="workshop-layout"><div class="paper-board"><div class="paper-board-top"><span id="patternName">橘红白花</span><span id="paperProgress">0 / 5 对齐</span></div><svg id="paperCanvas" viewBox="0 0 480 480" role="group" aria-label="五片可旋转的剪纸拼图"></svg><div class="paper-board-bottom"><span id="paperFeedback" aria-live="polite">点击一片，旋转一下。</span><button id="resetPaper" class="text-btn">打乱重拼 ↻</button></div></div><div class="craft-sidebar"><span class="overline">选一张你的作品</span><div class="pattern-options"><button class="selected" data-pattern="flower"><span>✿</span>橘红白花<small>五瓣花朵</small></button><button data-pattern="leaf"><span>❧</span>叶脉小扇<small>展开家乡的绿</small></button><button data-pattern="star"><span>✦</span>校园星光<small>点亮你的创造力</small></button></div><div class="craft-tip"><strong>你的指尖，就是小剪刀。</strong><p>每一片只需转 1—4 次。全部对齐后，领取一枚剪纸小匠徽章！</p></div><button id="downloadPaper" class="secondary-btn" disabled>完成后保存作品 ↓</button><div id="craftSuccess" class="craft-success" hidden>✦ 拼好了！这枚徽章属于你。</div></div></div></section>
+    <section id="collection" class="tab-panel collection" hidden aria-label="我的收藏"><div class="section-heading"><div><div class="eyebrow">MY LITTLE TREASURES</div><h2>每次冒险，<span>都值得收藏。</span></h2><p>不比排名，收集属于自己的进步。记录只保存在这台设备上。</p></div><img class="collection-mascot" src="assets/mascot.png" alt="向你招手的橘红少年"></div><div id="collectionStats" class="collection-stats"></div><div id="badgeList" class="badge-list"></div><button class="primary-btn" id="backToGame">带着徽章继续出发 →</button></section>
+  </main>
+  <section class="journey-strip" aria-label="家乡元素"><div><span class="journey-number">01</span><strong>化州橘红</strong><p>一片叶，一朵花，家乡就在身边。</p></div><div><span class="journey-number">02</span><strong>广东剪纸</strong><p>转一转，拼一拼，创意在手中绽放。</p></div><div><span class="journey-number">03</span><strong>积田校园</strong><p>一起跑，一起跳，做自己的小英雄。</p></div></section>
+  <footer><span>橘红少年 · 积田小学文化 IP 互动游戏</span><div><a href="nfc.html">NFC 卡片接入 ↗</a><button id="share" class="text-btn">分享冒险 ↗</button></div></footer>
+</div>
+<dialog id="helpDialog"><button class="dialog-close" aria-label="关闭玩法说明">×</button><span class="overline">一分钟就会玩</span><h2>跟着花叶，出发！</h2><ol><li><b>换一条跑道</b>：← → 或左右滑动，躲开路障。</li><li><b>跳过去</b>：空格、向上滑动或点击“跳跃”，跨过路障和水洼。</li><li><b>捡花叶</b>：叶片加 10 分，白花加 25 分；连击越高，奖励越多。</li><li><b>攒保护罩</b>：每 3 朵白花，自动获得 8 秒护盾；碰到障碍可抵挡一次。</li><li><b>遇见小风车</b>：6 秒内，三条跑道的花叶都能被你吸过来。</li><li><b>完成三段旅程</b>：到达终点即可收藏徽章，也能去剪纸工坊拼出自己的作品。</li></ol><p>按 P 或 Esc 暂停。切换页面时会自动暂停。</p><button class="primary-btn dialog-close-btn">我会啦 →</button></dialog>
+<div id="siteToast" class="site-toast" role="status"></div>
+</body></html>
